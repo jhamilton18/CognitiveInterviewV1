@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADAPT Lab - Cognitive Interview Protocol</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      padding-bottom: 100px;
+    }
+    header {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .logo-icon { width: 60px; height: 70px; }
+    .logo-text h1 {
+      color: #722F37;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      border-bottom: 3px solid #C9A227;
+      padding-bottom: 5px;
+    }
+    .logo-text p { color: #C9A227; font-size: 12px; margin-top: 5px; }
+    .section {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .section h2 {
+      color: #722F37;
+      border-bottom: 2px solid #C9A227;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    .section h3 { color: #722F37; margin: 20px 0 10px; font-size: 16px; }
+    label { display: block; margin-bottom: 5px; font-weight: 500; color: #555; }
+    input[type="text"], input[type="number"], input[type="datetime-local"], textarea, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      transition: border-color 0.3s;
+    }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #C9A227; }
+    textarea { min-height: 80px; resize: vertical; }
+    .checkbox-group, .radio-group { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
+    .checkbox-group label, .radio-group label {
+      display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;
+    }
+    input[type="checkbox"], input[type="radio"] { accent-color: #722F37; width: 18px; height: 18px; }
+    .script-box {
+      background: #FFF8E7;
+      border-left: 4px solid #C9A227;
+      padding: 15px;
+      margin: 15px 0;
+      font-style: italic;
+      border-radius: 0 5px 5px 0;
+    }
+    .probe-list { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 10px 0; }
+    .probe-list ul { margin-left: 20px; }
+    .probe-list li { margin-bottom: 8px; }
+    .item-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr 100px;
+      gap: 10px;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      align-items: center;
+    }
+    .item-row:nth-child(odd) { background: #fafafa; }
+    .add-btn {
+      background: #C9A227;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .add-btn:hover { background: #b08f1f; }
+    .remove-btn {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .download-btn {
+      background: #722F37;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .download-btn:hover { background: #5a252c; }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 2px solid #eee;
+    }
+    .nav-btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+    .nav-btn.prev {
+      background: #f0f0f0;
+      color: #555;
+    }
+    .nav-btn.prev:hover { background: #e0e0e0; }
+    .nav-btn.next {
+      background: #722F37;
+      color: white;
+    }
+    .nav-btn.next:hover { background: #5a252c; }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 20px;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .nav-tab {
+      padding: 10px 15px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.3s;
+    }
+    .nav-tab:hover { background: #e0e0e0; }
+    .nav-tab.active { background: #722F37; color: white; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .timestamp { font-size: 12px; color: #888; margin-bottom: 20px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+    /* Floating Quick Note Button */
+    .quick-note-fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #722F37, #943d47);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(114,47,55,0.4);
+      z-index: 1000;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .quick-note-fab:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(114,47,55,0.5);
+    }
+    .quick-note-fab.has-notes { animation: pulse 2s infinite; }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 4px 15px rgba(114,47,55,0.4); }
+      50% { box-shadow: 0 4px 25px rgba(201,162,39,0.6); }
+    }
+
+    /* Slide-out Panel */
+    .quick-note-panel {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 400px;
+      height: 100vh;
+      background: white;
+      box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+      z-index: 1001;
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .quick-note-panel.open { right: 0; }
+    .panel-header {
+      background: linear-gradient(135deg, #722F37, #943d47);
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .panel-header h3 { margin: 0; font-size: 18px; }
+    .close-panel {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .panel-body { flex: 1; overflow-y: auto; padding: 20px; }
+    .quick-add-form { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px solid #C9A227; }
+    .quick-add-form h4 { color: #722F37; margin-bottom: 15px; }
+    .trigger-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    .trigger-btn {
+      padding: 6px 12px;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .trigger-btn:hover, .trigger-btn.selected {
+      background: #C9A227;
+      color: white;
+      border-color: #C9A227;
+    }
+    .quick-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      resize: vertical;
+      margin-bottom: 10px;
+    }
+    .quick-textarea:focus { border-color: #C9A227; outline: none; }
+    .save-note-btn {
+      width: 100%;
+      padding: 12px;
+      background: #C9A227;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .save-note-btn:hover { background: #b08f1f; }
+    .notes-list h4 { color: #722F37; margin-bottom: 15px; }
+    .saved-note {
+      background: #f9f9f9;
+      border-left: 4px solid #C9A227;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 0 8px 8px 0;
+      position: relative;
+    }
+    .saved-note .note-trigger {
+      display: inline-block;
+      background: #722F37;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+    .saved-note .note-time {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 5px;
+    }
+    .saved-note .note-text { font-size: 14px; line-height: 1.5; }
+    .saved-note .delete-note {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .saved-note .delete-note:hover { color: #dc3545; }
+    .note-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #C9A227;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.3);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    .overlay.show { opacity: 1; visibility: visible; }
+    .keyboard-hint {
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 5px;
+    }
+    .empty-notes {
+      text-align: center;
+      color: #999;
+      padding: 30px;
+      font-style: italic;
+    }
+    @media (max-width: 600px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .item-row { grid-template-columns: 1fr; }
+      .quick-note-panel { width: 100%; right: -100%; }
+      .quick-note-fab { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 60 70">
+          <polygon points="30,5 5,65 15,65 30,25 45,65 55,65" fill="#C9A227" stroke="#722F37" stroke-width="1"/>
+          <line x1="12" y1="50" x2="48" y2="50" stroke="#C9A227" stroke-width="4"/>
+        </svg>
+        <div class="logo-text">
+          <h1>ADAPT LAB</h1>
+          <p>Automation Design Advancing People and Technology</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showTab('setup')">I. Setup</button>
+      <button class="nav-tab" onclick="showTab('condition')">II. Condition</button>
+      <button class="nav-tab" onclick="showTab('probing')">III. Probing</button>
+      <button class="nav-tab" onclick="showTab('debrief')">IV. Debrief</button>
+      <button class="nav-tab" onclick="showTab('observation')">V. Observation</button>
+      <button class="nav-tab" onclick="showTab('summary')">VI. Summary</button>
+    </div>
+
+    <!-- SECTION I: SETUP -->
+    <div id="setup" class="tab-content active">
+      <div class="section">
+        <h2>I. Interview Setup & Introduction</h2>
+        <p class="timestamp">Current Date/Time: <span id="currentDateTime"></span></p>
+        <div class="grid-2">
+          <div>
+            <label>Interviewer Name</label>
+            <input type="text" id="interviewerName" placeholder="Enter name">
+          </div>
+          <div>
+            <label>Participant ID</label>
+            <input type="text" id="participantId" placeholder="Enter ID">
+          </div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <label>Interview Date</label>
+            <input type="datetime-local" id="interviewDate">
+          </div>
+          <div>
+            <label>Planned Duration (minutes)</label>
+            <input type="number" id="duration" value="60" min="60" max="90">
+          </div>
+        </div>
+        <h3>Time Allocation</h3>
+        <div class="probe-list">
+          <ul>
+            <li><strong>Total Duration:</strong> 60-90 minutes</li>
+            <li><strong>Pre-briefing:</strong> 5 minutes</li>
+            <li><strong>Interview:</strong> 45-70 minutes</li>
+            <li><strong>Debrief:</strong> 10 minutes</li>
+          </ul>
+        </div>
+        <h3>Materials Checklist</h3>
+        <div class="checkbox-group">
+          <label><input type="checkbox" id="mat1"> Consent form</label>
+          <label><input type="checkbox" id="mat2"> Demographic questionnaire</label>
+          <label><input type="checkbox" id="mat3"> Y1 MATRIX instrument</label>
+          <label><input type="checkbox" id="mat4"> Y2 MATRIX instrument</label>
+          <label><input type="checkbox" id="mat5"> Task scenario & video</label>
+          <label><input type="checkbox" id="mat6"> Recording device</label>
+          <label><input type="checkbox" id="mat7"> Note-taking template</label>
+          <label><input type="checkbox" id="mat8"> Probe list</label>
+        </div>
+        <h3>Introduction Script</h3>
+        <div class="script-box">
+          "Thank you for participating today. We're testing a new tool that evaluates how well machines/technology respond to human needs in different situations. I want to emphasize a few important points:
+          <ol style="margin: 10px 0 0 20px;">
+            <li>We're testing the <strong>questionnaire</strong>, not you. There are no right or wrong answers.</li>
+            <li>I'll ask you to 'think aloud' as you read and answer questions.</li>
+            <li>After completing the questionnaire, I'll ask additional questions about your experience.</li>
+            <li>Please be completely honest. If something doesn't make sense, tell me.</li>
+            <li>This should take about 60-90 minutes. Feel free to ask for breaks.</li>
+          </ol>
+          Do you have any questions before we begin?"
+        </div>
+        <label><input type="checkbox" id="scriptRead"> Script read to participant</label>
+        <div class="nav-buttons">
+          <button class="nav-btn prev" disabled>← Previous</button>
+          <button class="nav-btn next" onclick="goToTab('condition')">Next: Condition →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION II: CONDITION -->
+    <div id="condition" class="tab-content">
+      <div class="section">
+        <h2>II. Condition Assignment</h2>
+        <label>Task Context</label>
+        <input type="text" id="taskContext" placeholder="Describe the task context">
+        <label>Machine/Technology</label>
+        <input type="text" id="machineTech" placeholder="Specify the machine or technology">
+        <h3>Responsivity Condition</h3>
+        <div class="radio-group">
+          <label><input type="radio" name="condition" value="high"> High Responsivity Condition</label>
+          <label><input type="radio" name="condition" value="low"> Low Responsivity Condition</label>
+        </div>
+        <label>Brief Task Description (read to participant)</label>
+        <textarea id="taskDescription" placeholder="Enter the task description you will read to the participant"></textarea>
+        <div class="nav-buttons">
+          <button class="nav-btn prev" onclick="goToTab('setup')">← Previous: Setup</button>
+          <button class="nav-btn next" onclick="goToTab('probing')">Next: Probing →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION III: PROBING -->
+    <div id="probing" class="tab-content">
+      <div class="section">
+        <h2>III. Probing Questions</h2>
+        <p style="margin-bottom:15px;">Record responses to standard probes for each MATRIX item. <strong style="color:#722F37;">Use the floating button (or press N) to quickly add spontaneous observations!</strong></p>
+        <div id="probingItems">
+          <div class="item-row" style="background:#722F37;color:white;font-weight:bold;">
+            <span>Item #</span>
+            <span>Notes</span>
+            <span>Difficulty (1-5)</span>
+          </div>
+        </div>
+        <button class="add-btn" onclick="addProbingItem()">+ Add Item</button>
+        <h3>Standard Probes Reference</h3>
+        <div class="probe-list">
+          <ul>
+            <li>"Can you tell me in your own words what this question is asking?"</li>
+            <li>"Was anything confusing or unclear about how this was worded?"</li>
+            <li>"What information did you use to answer this?"</li>
+            <li>"How easy or difficult was it to answer this question?"</li>
+          </ul>
+        </div>
+        <div class="nav-buttons">
+          <button class="nav-btn prev" onclick="goToTab('condition')">← Previous: Condition</button>
+          <button class="nav-btn next" onclick="goToTab('debrief')">Next: Debrief →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION IV: DEBRIEF -->
+    <div id="debrief" class="tab-content">
+      <div class="section">
+        <h2>IV. Post-Interview Debrief</h2>
+        <label>Did any questions feel repetitive?</label>
+        <textarea id="debrief1" placeholder="Record participant's response"></textarea>
+        <label>When you chose 'Not Interpretable,' what made you select that option?</label>
+        <textarea id="debrief2" placeholder="Goal: Determine if NA was chosen due to item wording confusion, insufficient task info, or other reasons"></textarea>
+        <label>Do you think the overall tool was applicable to the task we looked at today?</label>
+        <textarea id="debrief3" placeholder="Record participant's response"></textarea>
+        <label>Is there anything else you want to tell me about your experience?</label>
+        <textarea id="debrief4" placeholder="Record any additional comments"></textarea>
+        <div class="nav-buttons">
+          <button class="nav-btn prev" onclick="goToTab('probing')">← Previous: Probing</button>
+          <button class="nav-btn next" onclick="goToTab('observation')">Next: Observation →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION V: OBSERVATION -->
+    <div id="observation" class="tab-content">
+      <div class="section">
+        <h2>V. Interviewer Observation Notes</h2>
+        <h3>Subject Characteristics</h3>
+        <div class="grid-2">
+          <div>
+            <label>Experience with Technology</label>
+            <div class="radio-group">
+              <label><input type="radio" name="techExp" value="novice"> Novice</label>
+              <label><input type="radio" name="techExp" value="intermediate"> Intermediate</label>
+              <label><input type="radio" name="techExp" value="expert"> Expert</label>
+            </div>
+          </div>
+          <div>
+            <label>Familiarity with Machine</label>
+            <div class="radio-group">
+              <label><input type="radio" name="familiarity" value="daily"> Daily</label>
+              <label><input type="radio" name="familiarity" value="weekly"> Weekly</label>
+              <label><input type="radio" name="familiarity" value="monthly"> Monthly</label>
+              <label><input type="radio" name="familiarity" value="rarely"> Rarely</label>
+            </div>
+          </div>
+        </div>
+        <label>Communication Style</label>
+        <div class="radio-group">
+          <label><input type="radio" name="commStyle" value="verbose"> Verbose</label>
+          <label><input type="radio" name="commStyle" value="concise"> Concise</label>
+          <label><input type="radio" name="commStyle" value="needs-prompting"> Needs Prompting</label>
+        </div>
+        <h3>Response Patterns</h3>
+        <label>Items where subject paused longest</label>
+        <input type="text" id="pausedItems" placeholder="e.g., Item 3, Item 7">
+        <label>Items where subject re-read question</label>
+        <input type="text" id="rereadItems" placeholder="e.g., Item 2, Item 5">
+        <label>Items where subject asked for clarification</label>
+        <input type="text" id="clarificationItems" placeholder="e.g., Item 1">
+        <label>Items where subject gave "Not Interpretable"</label>
+        <input type="text" id="naItems" placeholder="e.g., Item 8">
+        <label>Items where subject showed visible confusion</label>
+        <input type="text" id="confusionItems" placeholder="e.g., Item 4">
+        <h3>Verbal Cues</h3>
+        <label>Frequent phrases used</label>
+        <input type="text" id="verbalCues" placeholder='e.g., "I don\'t know," "I guess," "Does this mean..."'>
+        <label>Unsolicited comments about questions</label>
+        <textarea id="unsolicitedComments" placeholder="Record any spontaneous comments"></textarea>
+        <h3>Non-Verbal Cues</h3>
+        <label>Facial expressions indicating confusion</label>
+        <input type="text" id="facialCues" placeholder="Describe observations">
+        <label>Signs of fatigue (note time point)</label>
+        <input type="text" id="fatigueSigns" placeholder="e.g., Yawning at 45 min mark">
+        <label>Engagement Level</label>
+        <div class="radio-group">
+          <label><input type="radio" name="engagement" value="high"> High</label>
+          <label><input type="radio" name="engagement" value="medium"> Medium</label>
+          <label><input type="radio" name="engagement" value="low"> Low</label>
+        </div>
+        <div class="nav-buttons">
+          <button class="nav-btn prev" onclick="goToTab('debrief')">← Previous: Debrief</button>
+          <button class="nav-btn next" onclick="goToTab('summary')">Next: Summary →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION VI: SUMMARY -->
+    <div id="summary" class="tab-content">
+      <div class="section">
+        <h2>VI. Post-Interview Summary</h2>
+        <p style="color:#722F37;font-weight:bold;margin-bottom:15px;">Complete within 24 hours</p>
+        <h3>Most Problematic Items (list 5-10)</h3>
+        <div id="problematicItems"></div>
+        <button class="add-btn" onclick="addProblematicItem()">+ Add Item</button>
+        <h3>Key Findings</h3>
+        <label>Comprehension issues</label>
+        <textarea id="comprehensionIssues" placeholder="Describe any comprehension problems"></textarea>
+        <label>Retrieval difficulties</label>
+        <textarea id="retrievalDifficulties" placeholder="Describe any retrieval problems"></textarea>
+        <label>Response mapping problems</label>
+        <textarea id="responseMappingProblems" placeholder="Describe any response mapping issues"></textarea>
+        <label>Context mismatches</label>
+        <textarea id="contextMismatches" placeholder="Describe any context mismatch issues"></textarea>
+        <h3>Suggested Revisions</h3>
+        <label>Items to Reword</label>
+        <textarea id="rewordItems" placeholder="List items and suggested rewording"></textarea>
+        <label>Items needing examples</label>
+        <input type="text" id="exampleItems" placeholder="List item numbers">
+        <label>Items to Simplify</label>
+        <input type="text" id="simplifyItems" placeholder="List item numbers">
+        <label>Items to Remove</label>
+        <input type="text" id="removeItems" placeholder="List item numbers">
+        <label>Items to Merge</label>
+        <input type="text" id="mergeItems" placeholder="List item pairs to merge">
+        <h3>Quote Highlights (exact words from participant)</h3>
+        <div id="quotesContainer" class="quotes-container"></div>
+        <button class="add-btn" onclick="addQuote()">+ Add Quote</button>
+        <div class="nav-buttons">
+          <button class="nav-btn prev" onclick="goToTab('observation')">← Previous: Observation</button>
+          <button class="nav-btn next" disabled style="background:#28a745;">✓ Complete</button>
+        </div>
+        <button class="download-btn" onclick="downloadJSON()">📥 Download Data as JSON</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Quick Note Button -->
+  <button class="quick-note-fab" onclick="togglePanel()" title="Quick Note (Press N)">
+    ✎
+    <span class="note-count" id="noteCount" style="display:none;">0</span>
+  </button>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay" onclick="togglePanel()"></div>
+
+  <!-- Quick Note Panel -->
+  <div class="quick-note-panel" id="quickNotePanel">
+    <div class="panel-header">
+      <div>
+        <h3>📝 Quick Observation Notes</h3>
+        <div class="keyboard-hint">Press N to open/close • Esc to close</div>
+      </div>
+      <button class="close-panel" onclick="togglePanel()">×</button>
+    </div>
+    <div class="panel-body">
+      <div class="quick-add-form">
+        <h4>Add New Observation</h4>
+        <label style="font-size:13px;margin-bottom:10px;">Quick triggers (click to select):</label>
+        <div class="trigger-buttons">
+          <button class="trigger-btn" onclick="selectTrigger(this, 'Re-reads question')">Re-reads</button>
+          <button class="trigger-btn" onclick="selectTrigger(this, 'Unexpected answer')">Unexpected answer</button>
+          <button class="trigger-btn" onclick="selectTrigger(this, 'Shows confusion')">Confusion</button>
+          <button class="trigger-btn" onclick="selectTrigger(this, 'Selected N/A')">Selected N/A</button>
+          <button class="trigger-btn" onclick="selectTrigger(this, 'Asked for clarification')">Clarification</button>
+          <button class="trigger-btn" onclick="selectTrigger(this, 'Hesitation')">Hesitation</button>
+          <button class="trigger-btn" onclick="selectTrigger(this, 'Unsolicited comment')">Comment</button>
+          <button class="trigger-btn" onclick="selectTrigger(this, 'Other')">Other</button>
+        </div>
+        <input type="text" id="currentTrigger" placeholder="Trigger (or type custom)" style="margin-bottom:10px;">
+        <textarea class="quick-textarea" id="quickNoteText" placeholder="What did you observe? What did the participant say or do?"></textarea>
+        <button class="save-note-btn" onclick="saveQuickNote()">💾 Save Note</button>
+      </div>
+      <div class="notes-list">
+        <h4>Saved Observations (<span id="notesCountText">0</span>)</h4>
+        <div id="savedNotesList">
+          <div class="empty-notes">No observations recorded yet.<br>Start capturing insights!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize
+    document.getElementById('currentDateTime').textContent = new Date().toLocaleString();
+    document.getElementById('interviewDate').value = new Date().toISOString().slice(0,16);
+    
+    let probingItemCount = 0;
+    let problematicItemCount = 0;
+    let quoteCount = 0;
+    let quickNotes = [];
+    let selectedTrigger = '';
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'n' || e.key === 'N') {
+        if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          togglePanel();
+        }
+      }
+      if (e.key === 'Escape') {
+        const panel = document.getElementById('quickNotePanel');
+        if (panel.classList.contains('open')) togglePanel();
+      }
+    });
+
+    function togglePanel() {
+      const panel = document.getElementById('quickNotePanel');
+      const overlay = document.getElementById('overlay');
+      panel.classList.toggle('open');
+      overlay.classList.toggle('show');
+      if (panel.classList.contains('open')) {
+        document.getElementById('quickNoteText').focus();
+      }
+    }
+
+    function selectTrigger(btn, trigger) {
+      document.querySelectorAll('.trigger-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById('currentTrigger').value = trigger;
+      selectedTrigger = trigger;
+    }
+
+    function saveQuickNote() {
+      const trigger = document.getElementById('currentTrigger').value.trim();
+      const text = document.getElementById('quickNoteText').value.trim();
+      if (!text) { alert('Please enter an observation'); return; }
+      
+      const note = {
+        id: Date.now(),
+        trigger: trigger || 'General observation',
+        text: text,
+        timestamp: new Date().toLocaleTimeString()
+      };
+      quickNotes.push(note);
+      updateNotesList();
+      
+      // Clear form
+      document.getElementById('currentTrigger').value = '';
+      document.getElementById('quickNoteText').value = '';
+      document.querySelectorAll('.trigger-btn').forEach(b => b.classList.remove('selected'));
+      document.getElementById('quickNoteText').focus();
+    }
+
+    function deleteQuickNote(id) {
+      quickNotes = quickNotes.filter(n => n.id !== id);
+      updateNotesList();
+    }
+
+    function updateNotesList() {
+      const list = document.getElementById('savedNotesList');
+      const count = quickNotes.length;
+      document.getElementById('notesCountText').textContent = count;
+      const countBadge = document.getElementById('noteCount');
+      const fab = document.querySelector('.quick-note-fab');
+      
+      if (count > 0) {
+        countBadge.textContent = count;
+        countBadge.style.display = 'flex';
+        fab.classList.add('has-notes');
+      } else {
+        countBadge.style.display = 'none';
+        fab.classList.remove('has-notes');
+      }
+
+      if (count === 0) {
+        list.innerHTML = '<div class="empty-notes">No observations recorded yet.<br>Start capturing insights!</div>';
+        return;
+      }
+
+      list.innerHTML = quickNotes.slice().reverse().map(note => `
+        <div class="saved-note">
+          <button class="delete-note" onclick="deleteQuickNote(${note.id})">×</button>
+          <span class="note-trigger">${note.trigger}</span>
+          <div class="note-time">${note.timestamp}</div>
+          <div class="note-text">${note.text}</div>
+        </div>
+      `).join('');
+    }
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function goToTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      const tabs = document.querySelectorAll('.nav-tab');
+      const tabOrder = ['setup', 'condition', 'probing', 'debrief', 'observation', 'summary'];
+      const idx = tabOrder.indexOf(tabId);
+      if (idx >= 0 && tabs[idx]) tabs[idx].classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function addProbingItem() {
+      probingItemCount++;
+      const container = document.getElementById('probingItems');
+      const div = document.createElement('div');
+      div.className = 'item-row';
+      div.innerHTML = `
+        <input type="text" placeholder="Item #" id="probeItem${probingItemCount}">
+        <textarea placeholder="Notes on comprehension, retrieval, response" id="probeNotes${probingItemCount}" style="min-height:40px"></textarea>
+        <select id="probeDiff${probingItemCount}">
+          <option value="">Select</option>
+          <option value="1">1 - Very Easy</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5 - Very Difficult</option>
+        </select>
+      `;
+      container.appendChild(div);
+    }
+
+    function addProblematicItem() {
+      problematicItemCount++;
+      const container = document.getElementById('problematicItems');
+      const div = document.createElement('div');
+      div.className = 'item-row';
+      div.style.gridTemplateColumns = '80px 1fr 60px';
+      div.innerHTML = `
+        <input type="text" placeholder="Item #" id="probItem${problematicItemCount}">
+        <input type="text" placeholder="Reason" id="probReason${problematicItemCount}">
+        <button class="remove-btn" onclick="this.parentElement.remove()">Remove</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function addQuote() {
+      quoteCount++;
+      const container = document.getElementById('quotesContainer');
+      const div = document.createElement('div');
+      div.style.display = 'flex';
+      div.style.gap = '10px';
+      div.style.marginBottom = '10px';
+      div.innerHTML = `
+        <input type="text" placeholder="Enter exact quote from participant" id="quote${quoteCount}" style="flex:1">
+        <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function getRadioValue(name) {
+      const selected = document.querySelector(`input[name="${name}"]:checked`);
+      return selected ? selected.value : '';
+    }
+
+    function downloadJSON() {
+      const data = {
+        metadata: {
+          exportDate: new Date().toISOString(),
+          interviewerName: document.getElementById('interviewerName').value,
+          participantId: document.getElementById('participantId').value,
+          interviewDate: document.getElementById('interviewDate').value,
+          duration: document.getElementById('duration').value
+        },
+        setup: {
+          materialsChecklist: {
+            consentForm: document.getElementById('mat1').checked,
+            demographicQuestionnaire: document.getElementById('mat2').checked,
+            y1Matrix: document.getElementById('mat3').checked,
+            y2Matrix: document.getElementById('mat4').checked,
+            taskScenario: document.getElementById('mat5').checked,
+            recordingDevice: document.getElementById('mat6').checked,
+            noteTakingTemplate: document.getElementById('mat7').checked,
+            probeList: document.getElementById('mat8').checked
+          },
+          scriptRead: document.getElementById('scriptRead').checked
+        },
+        condition: {
+          taskContext: document.getElementById('taskContext').value,
+          machineTechnology: document.getElementById('machineTech').value,
+          responsivityCondition: getRadioValue('condition'),
+          taskDescription: document.getElementById('taskDescription').value
+        },
+        probingItems: [],
+        spontaneousNotes: quickNotes,
+        debrief: {
+          repetitiveQuestions: document.getElementById('debrief1').value,
+          notInterpretableReason: document.getElementById('debrief2').value,
+          toolApplicability: document.getElementById('debrief3').value,
+          additionalComments: document.getElementById('debrief4').value
+        },
+        observations: {
+          subjectCharacteristics: {
+            technologyExperience: getRadioValue('techExp'),
+            machineFamiliarity: getRadioValue('familiarity'),
+            communicationStyle: getRadioValue('commStyle')
+          },
+          responsePatterns: {
+            pausedItems: document.getElementById('pausedItems').value,
+            rereadItems: document.getElementById('rereadItems').value,
+            clarificationItems: document.getElementById('clarificationItems').value,
+            notInterpretableItems: document.getElementById('naItems').value,
+            confusionItems: document.getElementById('confusionItems').value
+          },
+          verbalCues: {
+            frequentPhrases: document.getElementById('verbalCues').value,
+            unsolicitedComments: document.getElementById('unsolicitedComments').value
+          },
+          nonVerbalCues: {
+            facialExpressions: document.getElementById('facialCues').value,
+            fatigueSigns: document.getElementById('fatigueSigns').value,
+            engagementLevel: getRadioValue('engagement')
+          }
+        },
+        summary: {
+          problematicItems: [],
+          keyFindings: {
+            comprehensionIssues: document.getElementById('comprehensionIssues').value,
+            retrievalDifficulties: document.getElementById('retrievalDifficulties').value,
+            responseMappingProblems: document.getElementById('responseMappingProblems').value,
+            contextMismatches: document.getElementById('contextMismatches').value
+          },
+          suggestedRevisions: {
+            reword: document.getElementById('rewordItems').value,
+            addExamples: document.getElementById('exampleItems').value,
+            simplify: document.getElementById('simplifyItems').value,
+            remove: document.getElementById('removeItems').value,
+            merge: document.getElementById('mergeItems').value
+          },
+          quotes: []
+        }
+      };
+
+      for (let i = 1; i <= probingItemCount; i++) {
+        const item = document.getElementById(`probeItem${i}`);
+        if (item) {
+          data.probingItems.push({
+            itemNumber: item.value,
+            notes: document.getElementById(`probeNotes${i}`)?.value || '',
+            difficulty: document.getElementById(`probeDiff${i}`)?.value || ''
+          });
+        }
+      }
+
+      for (let i = 1; i <= problematicItemCount; i++) {
+        const item = document.getElementById(`probItem${i}`);
+        if (item) {
+          data.summary.problematicItems.push({
+            itemNumber: item.value,
+            reason: document.getElementById(`probReason${i}`)?.value || ''
+          });
+        }
+      }
+
+      for (let i = 1; i <= quoteCount; i++) {
+        const quote = document.getElementById(`quote${i}`);
+        if (quote && quote.value) {
+          data.summary.quotes.push(quote.value);
+        }
+      }
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `cognitive_interview_${data.metadata.participantId || 'unknown'}_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Add initial items
+    addProbingItem();
+    addProblematicItem();
+    addQuote();
+  </script>
+</body>
+</html
